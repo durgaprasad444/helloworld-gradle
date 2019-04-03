@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gradle
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: gradle
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gradle
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gradle
+  template:
+    metadata:
+      labels:
+        app: gradle
+    spec:
+      containers:
+      - name: gradle
+        image: durgaprasad444/gradle:1
+        ports:
+        - containerPort: 8080
